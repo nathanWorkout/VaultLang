@@ -4,16 +4,33 @@
 #include <string.h>
 #include <ctype.h>
 #include "../include/lexer.h"
+#include "../include/ast.h"
+#include "../include/codegen.h"
+#include "../include/parser.h"
+#include "../include/file.h"
 
 int main() {
-    const char *src = "i8 test = \"abc\"; \n i16 number = 14 \n f32 pi = 3.14";
+    char *src = read_file("tests/hello.vl");
+
     Lexer l = lexer_new(src);
 
-    Token t;
+    Parser p;
+    p.lexer = l;
+    p.current = next_token(&p.lexer);
 
-    while ((t = next_token(&l)).type != TOKEN_EOF) {
-        printf("type: %d  value: %s\n", t.type, t.value);
+    FILE *out = fopen("asm/output.asm", "w");
+    Codegen cg = codegen_new(out);
+
+    codegen_prologue(&cg);
+
+    while (p.current.type != TOKEN_EOF) {
+        Node n = parse(&p);
+        codegen_var_decl(&cg, &n);
     }
 
+    codegen_epilogue(&cg);
+
+    fclose(out);
+    free(src);
     return 0;
 }
