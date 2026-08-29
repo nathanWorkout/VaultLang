@@ -93,7 +93,31 @@ Token read_char(Lexer *l) {
     return t;
 }
 
-Token read_indent(Lexer *l) {
+Token read_number(Lexer *l) {
+    Token t;
+    t.type = TOKEN_INT;
+    int i = 0;
+
+    while (isdigit(l->current_char)) {
+        t.value[i++] = l->current_char;
+        advance(l);
+    }
+
+    if (l->current_char == '.' && isdigit(peek(l))) {
+        t.type = TOKEN_FLOAT;
+        t.value[i++] = '.';
+        advance(l);
+        while (isdigit(l->current_char)) {
+            t.value[i++] = l->current_char;
+            advance(l);
+        }
+    }
+
+    t.value[i] = '\0';
+    return t;
+}
+
+Token read_ident(Lexer *l) {
     Token t;
     int i = 0;
 
@@ -157,9 +181,10 @@ Token next_token(Lexer *l) {
 
         case '\'': return read_char(l);
 
-        default:
-            if (isalpha(l->current_char) || l->current_char == '_') return read_indent(l);
-    }
+            default:
+                if (isalpha(l->current_char) || l->current_char == '_') return read_ident(l);
+                if (isdigit(l->current_char)) return read_number(l);
+        }
 
     // caractère inconnu
     Token t;

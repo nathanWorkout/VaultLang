@@ -7,6 +7,7 @@ typedef enum {
     TOKEN_IDENT,
     TOKEN_EQUAL,
     TOKEN_INT, 
+    TOKEN_FLOAT,
     TOKEN_SEMI,
     TOKEN_STRING, // "a"
     TOKEN_CHAR,   // 'a'
@@ -34,7 +35,8 @@ void skip_whitespace(Lexer *l);
 void read_comment(Lexer *l);
 Token read_string(Lexer *l);
 Token read_char(Lexer *l);
-Token read_indent(Lexer *l);
+Token read_number(Lexer *l);
+Token read_ident(Lexer *l);
 Token next_token(Lexer *l);
 
 #endif

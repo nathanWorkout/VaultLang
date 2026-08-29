@@ -6,7 +6,7 @@
 #include "../include/lexer.h"
 
 int main() {
-    const char *src = "i8 test = \"abc\";";
+    const char *src = "i8 test = \"abc\"; \n i16 number = 14 \n f32 pi = 3.14";
     Lexer l = lexer_new(src);
 
     Token t;
