@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <string.h>
 #include "../include/parser.h"
 #include "../include/ast.h"
@@ -27,6 +28,10 @@ Node parse_var_decl(Parser *p) {
     parser_advance(p);
 
     // ;
+    if (p->current.type != TOKEN_SEMI) {
+        fprintf(stderr, "Error line %zu : expected ';'\n", p->lexer.line);
+        exit(1);
+    }
     parser_advance(p);
 
     return make_var_decl(var_type, name, value);

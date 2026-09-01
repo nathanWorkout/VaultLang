@@ -1,4 +1,7 @@
+section .data
+section .bss
 section .text
+
 global _start
 
 _start:
@@ -6,11 +9,7 @@ _start:
     mov rbp, rsp
     sub rsp, 16
 
-    mov dword [rbp - 4], 18
-    mov qword [rbp - 16], 89
-
-    mov rsp, rbp
-    pop rbp
-    mov rax, 60
-    mov rdi, 0
-    syscall
+%define age rbp - 1
+    mov byte age, 3
+%define age1 rbp - 4
+    mov word age1, 17
