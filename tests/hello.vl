@@ -1,4 +1,7 @@
-i8 age = 3;
-i16 age1 = 17;
+str age = "\nSalut\n";
+str age1 = "Yoo";
 i32 age2 = 18;
 i64 age3 = 89;
+
+print(age);
+print(age1);

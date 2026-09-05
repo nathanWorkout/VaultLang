@@ -74,7 +74,18 @@ Token read_string(Lexer *l) {
     advance(l); // "
     int i = 0;
     while (l->current_char != '"' && l->current_char != '\0') {
-        t.value[i++] = l->current_char;
+        if (l->current_char == '\\') {
+            advance(l);
+            switch (l->current_char) {
+                case 'n':  t.value[i++] = '\n'; break;
+                case 't':  t.value[i++] = '\t'; break;
+                case '\\': t.value[i++] = '\\'; break;
+                case '"':  t.value[i++] = '"';  break;
+                default:   t.value[i++] = l->current_char; break;
+            }
+        } else {
+            t.value[i++] = l->current_char;
+        }
         advance(l);
     }
     t.value[i] = '\0';
@@ -132,7 +143,9 @@ Token read_ident(Lexer *l) {
         strcmp(t.value, "u8")  == 0 || strcmp(t.value, "u16") == 0 ||
         strcmp(t.value, "u32") == 0 || strcmp(t.value, "u64") == 0 ||
         strcmp(t.value, "f32") == 0 || strcmp(t.value, "f64") == 0 ||
-        strcmp(t.value, "const") == 0) {
+        strcmp(t.value, "const") == 0 ||
+        strcmp(t.value, "print") == 0 ||
+        strcmp(t.value, "str") == 0) {
         t.type = TOKEN_TYPE;
     } else {
         t.type = TOKEN_IDENT;
@@ -160,6 +173,24 @@ Token next_token(Lexer *l) {
             t.value[1] = '\0';
             advance(l);
 
+            return t;
+        }
+
+        case '(': {
+            Token t;
+            t.type = TOKEN_LPAREN;
+            t.value[0] = '(';
+            t.value[1] = '\0';
+            advance(l);
+            return t;
+        }
+
+        case ')': {
+            Token t;
+            t.type = TOKEN_RPAREN;
+            t.value[0] = ')';
+            t.value[1] = '\0';
+            advance(l);
             return t;
         }
 

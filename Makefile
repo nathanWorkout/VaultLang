@@ -20,6 +20,11 @@ build/%.o: src/%.c
 run:
 	./$(BIN)
 
+run_asm:
+	nasm -f elf64 asm/output.asm -o asm/output.o
+	ld asm/output.o -o asm/output
+	./asm/output
+
 full: clean all run
 
 clean:

@@ -11,6 +11,8 @@ typedef enum {
     TOKEN_SEMI,
     TOKEN_STRING, // "a"
     TOKEN_CHAR,   // 'a'
+    TOKEN_LPAREN,
+    TOKEN_RPAREN,
     TOKEN_EOF,
 } TokenType;
 

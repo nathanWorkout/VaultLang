@@ -4,13 +4,27 @@
 #include <stdio.h>
 
 typedef struct {
-    FILE *asm_file;
-    int stack_offset;
+    char name[256];
+    char value[256];
+    int  str_id;
+} StrEntry;
+
+typedef struct {
+    FILE     *asm_file;
+    int       stack_offset;
+    char      data_section[4096]; // buffer
+    int       data_offset;        // offset buffer
+    int       str_count;
+    StrEntry  str_table[256];
+    int       str_table_count;
 } Codegen;
 
 Codegen codegen_new(FILE *asm_file);
 void codegen_var_decl(Codegen *cg, Node *node);
+void codegen_collect_string(Codegen *cg, Node *node);
+void codegen_print(Codegen *cg, Node *node);
 void codegen_prologue(Codegen *cg);
 void codegen_epilogue(Codegen *cg);
+void codegen_node(Codegen *cg, Node *node);
 
 #endif
