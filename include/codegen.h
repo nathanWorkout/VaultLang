@@ -10,6 +10,12 @@ typedef struct {
 } StrEntry;
 
 typedef struct {
+    char name[256];
+    char var_type[16];
+    int  stack_offset;
+} VarEntry;
+
+typedef struct {
     FILE     *asm_file;
     int       stack_offset;
     char      data_section[4096]; // buffer
@@ -17,6 +23,8 @@ typedef struct {
     int       str_count;
     StrEntry  str_table[256];
     int       str_table_count;
+    VarEntry  var_table[256];     
+    int       var_table_count; 
 } Codegen;
 
 Codegen codegen_new(FILE *asm_file);

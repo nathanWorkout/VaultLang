@@ -176,6 +176,15 @@ Token next_token(Lexer *l) {
             return t;
         }
 
+        case '-': {
+            advance(l);
+            Token t = read_number(l);
+            char tmp[256];
+            snprintf(tmp, 256, "-%s", t.value); // ecrit dans le buffer tmp -%s
+            strncpy(t.value, tmp, 256); // devient -%s
+            return t;
+        }
+
         case '(': {
             Token t;
             t.type = TOKEN_LPAREN;

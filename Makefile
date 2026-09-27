@@ -1,7 +1,12 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Iinclude
 
-SRC = src/main.c src/lexer.c src/ast.c src/parser.c src/codegen.c src/file.c
+SRC = src/main.c src/lexer.c src/ast.c src/parser.c src/file.c \
+      src/codegen/codegen.c \
+      src/codegen/codegen_var.c \
+      src/codegen/codegen_print.c \
+      src/codegen/codegen_prologue.c
+
 OBJ = $(patsubst src/%.c, build/%.o, $(SRC))
 BIN = build/vaultc
 
@@ -9,13 +14,13 @@ all: build $(BIN)
 
 build:
 	mkdir -p build
-	mkdir -p asm
+
+build/%.o: src/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(BIN): $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $^
-
-build/%.o: src/%.c
-	$(CC) $(CFLAGS) -c -o $@ $<
 
 run:
 	./$(BIN)
