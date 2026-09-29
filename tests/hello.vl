@@ -1,3 +1,6 @@
 i8 negative = -34;
+i64 positive = 40567;
 
 print(negative);
+print("\n");
+print(positive);

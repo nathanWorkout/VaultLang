@@ -26,6 +26,7 @@ run:
 	./$(BIN)
 
 run_asm:
+	rm -f asm/output.o asm/output
 	nasm -f elf64 asm/output.asm -o asm/output.o
 	ld asm/output.o -o asm/output
 	./asm/output

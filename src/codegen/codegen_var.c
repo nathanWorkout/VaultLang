@@ -84,9 +84,5 @@ void codegen_var_decl(Codegen *cg, Node *node) {
     }
     else if (strcmp(node->var_type, "str") == 0) {
         codegen_collect_string(cg, node);
-        strncpy(cg->str_table[cg->str_table_count].name, node->name, 256);
-        strncpy(cg->str_table[cg->str_table_count].value, node->value, 256);
-        cg->str_table[cg->str_table_count].str_id = node->str_id;
-        cg->str_table_count++;
     }
 }
