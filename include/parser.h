@@ -8,8 +8,10 @@ typedef struct {
     Token current;
 } Parser;
 
-void parser_advance(Parser *p);
-Node parse_var_decl(Parser *p);
-Node parse(Parser *p);
+void  parser_advance(Parser *p);
+Node *parse_expr(Parser *p);
+Node *parse_var_decl(Parser *p);
+Node *parse_print(Parser *p);
+Node *parse(Parser *p);
 
 #endif

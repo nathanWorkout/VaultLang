@@ -1,6 +1,5 @@
-i8 negative = -34;
-i64 positive = 40567;
+u32 x = 5*5 + 10 - 5;
 
-print(negative);
-print("\n");
-print(positive);
+str variable = "\nsalut\n";
+print(variable);
+print(x);

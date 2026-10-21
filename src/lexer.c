@@ -177,12 +177,28 @@ Token next_token(Lexer *l) {
         }
 
         case '-': {
+            Token t;
+            t.type = TOKEN_MINUS;
+            t.value[0] = '-';
+            t.value[1] = '\0';
             advance(l);
-            Token t = read_number(l);
-            char tmp[256];
-            snprintf(tmp, 256, "-%s", t.value); // ecrit dans le buffer tmp -%s
-            strncpy(t.value, tmp, 256); // devient -%s
             return t;
+        }
+
+        case '+': { 
+            Token t; t.type = TOKEN_PLUS;  
+            t.value[0] = '+'; 
+            t.value[1] = '\0'; 
+            advance(l); 
+            return t; 
+        }
+
+        case '*': { 
+            Token t; t.type = TOKEN_STAR;  
+            t.value[0] = '*'; 
+            t.value[1] = '\0'; 
+            advance(l); 
+            return t; 
         }
 
         case '(': {

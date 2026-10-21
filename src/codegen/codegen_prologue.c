@@ -50,10 +50,58 @@ void codegen_prologue(Codegen *cg) {
     fprintf(cg->asm_file, "    pop rbx\n");
     fprintf(cg->asm_file, "    ret\n\n\n");
 
+    fprintf(cg->asm_file, "_udiv:\n");
+    fprintf(cg->asm_file, "    pop rcx\n");
+    fprintf(cg->asm_file, "    pop rbx\n");
+    fprintf(cg->asm_file, "    pop rax\n");
+    fprintf(cg->asm_file, "    xor rdx, rdx\n");  // zero extend pour div unsigned
+    fprintf(cg->asm_file, "    div rbx\n");
+    fprintf(cg->asm_file, "    push rax\n");
+    fprintf(cg->asm_file, "    push rcx\n");
+    fprintf(cg->asm_file, "    ret\n\n");
+
+    // routines arithmetiques
+    fprintf(cg->asm_file, "_add:\n");
+    fprintf(cg->asm_file, "    pop rcx\n"); // adresse de retour
+    fprintf(cg->asm_file, "    pop rbx\n"); // si c'est a + b : pop b pop a
+    fprintf(cg->asm_file, "    pop rax\n");
+    fprintf(cg->asm_file, "    add rax, rbx\n");
+    fprintf(cg->asm_file, "    push rax\n");
+    fprintf(cg->asm_file, "    push rcx\n");
+    fprintf(cg->asm_file, "    ret\n\n");
+
+    fprintf(cg->asm_file, "_sub:\n");
+    fprintf(cg->asm_file, "    pop rcx\n");
+    fprintf(cg->asm_file, "    pop rbx\n");
+    fprintf(cg->asm_file, "    pop rax\n");
+    fprintf(cg->asm_file, "    sub rax, rbx\n");
+    fprintf(cg->asm_file, "    push rax\n");
+    fprintf(cg->asm_file, "    push rcx\n");
+    fprintf(cg->asm_file, "    ret\n\n");
+
+    fprintf(cg->asm_file, "_mul:\n");
+    fprintf(cg->asm_file, "    pop rcx\n");
+    fprintf(cg->asm_file, "    pop rbx\n");
+    fprintf(cg->asm_file, "    pop rax\n");
+    fprintf(cg->asm_file, "    imul rax, rbx\n");
+    fprintf(cg->asm_file, "    push rax\n");
+    fprintf(cg->asm_file, "    push rcx\n");
+    fprintf(cg->asm_file, "    ret\n\n");
+
+    fprintf(cg->asm_file, "_div:\n");
+    fprintf(cg->asm_file, "    pop rcx\n");
+    fprintf(cg->asm_file, "    pop rbx\n");
+    fprintf(cg->asm_file, "    pop rax\n");
+    fprintf(cg->asm_file, "    cqo\n");
+    fprintf(cg->asm_file, "    idiv rbx\n");
+    fprintf(cg->asm_file, "    push rax\n");
+    fprintf(cg->asm_file, "    push rcx\n");
+    fprintf(cg->asm_file, "    ret\n\n");
+
     fprintf(cg->asm_file, "_main:\n");
     fprintf(cg->asm_file, "    push rbp\n");
     fprintf(cg->asm_file, "    mov rbp, rsp\n");
-    fprintf(cg->asm_file, "    sub rsp, 16\n\n");
+    fprintf(cg->asm_file, "    sub rsp, 128\n\n");
 }
 
 void codegen_epilogue(Codegen *cg) {

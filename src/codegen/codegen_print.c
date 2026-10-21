@@ -19,6 +19,21 @@ void codegen_print(Codegen *cg, Node *node) {
             else if (strcmp(cg->var_table[i].var_type, "i8") == 0) {
                 fprintf(cg->asm_file, "    movsx rax, byte [rbp - %d]\n", cg->var_table[i].stack_offset);
             }
+
+            else if (strcmp(cg->var_table[i].var_type, "u32") == 0) {
+                fprintf(cg->asm_file, "    mov eax, dword [rbp - %d]\n", cg->var_table[i].stack_offset);
+            }
+            else if (strcmp(cg->var_table[i].var_type, "u16") == 0) {
+                fprintf(cg->asm_file, "    movzx rax, word [rbp - %d]\n", cg->var_table[i].stack_offset);
+            }
+            else if (strcmp(cg->var_table[i].var_type, "u8") == 0) {
+                fprintf(cg->asm_file, "    movzx rax, byte [rbp - %d]\n", cg->var_table[i].stack_offset);
+            }
+            else if (strcmp(cg->var_table[i].var_type, "u64") == 0) {
+                fprintf(cg->asm_file, "    mov rax, [rbp - %d]\n", cg->var_table[i].stack_offset);
+            }
+
+            fprintf(cg->asm_file, "    xor rdx, rdx\n");
             fprintf(cg->asm_file, "    call itoa\n");
             return;
         }

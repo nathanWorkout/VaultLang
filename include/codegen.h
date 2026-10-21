@@ -34,5 +34,6 @@ void codegen_print(Codegen *cg, Node *node);
 void codegen_prologue(Codegen *cg);
 void codegen_epilogue(Codegen *cg);
 void codegen_node(Codegen *cg, Node *node);
+void codegen_expr(Codegen *cg, Node *node);
 
 #endif

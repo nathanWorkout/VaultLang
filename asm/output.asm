@@ -1,5 +1,5 @@
 section .data
-    str0 db "", 10, 0
+    str0 db "", 10, "salut", 10, 0
 
 section .bss
     int_buf resb 21
@@ -53,23 +53,83 @@ itoa:
     ret
 
 
+_udiv:
+    pop rcx
+    pop rbx
+    pop rax
+    xor rdx, rdx
+    div rbx
+    push rax
+    push rcx
+    ret
+
+_add:
+    pop rcx
+    pop rbx
+    pop rax
+    add rax, rbx
+    push rax
+    push rcx
+    ret
+
+_sub:
+    pop rcx
+    pop rbx
+    pop rax
+    sub rax, rbx
+    push rax
+    push rcx
+    ret
+
+_mul:
+    pop rcx
+    pop rbx
+    pop rax
+    imul rax, rbx
+    push rax
+    push rcx
+    ret
+
+_div:
+    pop rcx
+    pop rbx
+    pop rax
+    cqo
+    idiv rbx
+    push rax
+    push rcx
+    ret
+
 _main:
     push rbp
     mov rbp, rsp
-    sub rsp, 16
+    sub rsp, 128
 
-%define negative [rbp - 1]
-    mov byte negative, -34
-%define positive [rbp - 16]
-    mov qword positive, 40567
-    movsx rax, byte [rbp - 1]
-    call itoa
+%define x [rbp - 4]
+    mov rax, 5
+    push rax
+    mov rax, 5
+    push rax
+    call _mul
+    pop rax
+    push rax
+    mov rax, 10
+    push rax
+    call _add
+    pop rax
+    push rax
+    mov rax, 5
+    push rax
+    call _sub
+    pop rax
+    mov dword x, eax
     mov rax, 1
     mov rdi, 1
     mov rsi, str0
-    mov rdx, 1
+    mov rdx, 7
     syscall
-    mov rax, [rbp - 16]
+    mov eax, dword [rbp - 4]
+    xor rdx, rdx
     call itoa
 
     mov rsp, rbp

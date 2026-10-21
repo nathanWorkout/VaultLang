@@ -49,39 +49,103 @@ static void register_var(Codegen *cg, Node *node) {
     cg->var_table_count++;
 }
 
-// note : faire tout les types de 0 a 256
 void codegen_var_decl(Codegen *cg, Node *node) {
     if (strcmp(node->var_type, "i8") == 0) {
         cg->stack_offset += 1;
         fprintf(cg->asm_file, "%%define %s [rbp - %d]\n", node->name, cg->stack_offset);
-        fprintf(cg->asm_file, "    mov byte %s, %s\n", node->name, node->value);
-
+        if (node->left->type == NODE_BINOP) {
+            codegen_expr(cg, node->left);
+            fprintf(cg->asm_file, "    mov byte %s, al\n", node->name);
+        } else {
+            fprintf(cg->asm_file, "    mov byte %s, %s\n", node->name, node->value);
+        }
         register_var(cg, node);
     }
     else if (strcmp(node->var_type, "i16") == 0) {
         cg->stack_offset = (cg->stack_offset + 1) & ~1;
         cg->stack_offset += 2;
         fprintf(cg->asm_file, "%%define %s [rbp - %d]\n", node->name, cg->stack_offset);
-        fprintf(cg->asm_file, "    mov word %s, %s\n", node->name, node->value);
-
+        if (node->left->type == NODE_BINOP) {
+            codegen_expr(cg, node->left);
+            fprintf(cg->asm_file, "    mov word %s, ax\n", node->name);
+        } else {
+            fprintf(cg->asm_file, "    mov word %s, %s\n", node->name, node->value);
+        }
         register_var(cg, node);
     }
     else if (strcmp(node->var_type, "i32") == 0) {
         cg->stack_offset = (cg->stack_offset + 3) & ~3;
         cg->stack_offset += 4;
         fprintf(cg->asm_file, "%%define %s [rbp - %d]\n", node->name, cg->stack_offset);
-        fprintf(cg->asm_file, "    mov dword %s, %s\n", node->name, node->value);
-
+        if (node->left->type == NODE_BINOP) {
+            codegen_expr(cg, node->left);
+            fprintf(cg->asm_file, "    mov dword %s, eax\n", node->name);
+        } else {
+            fprintf(cg->asm_file, "    mov dword %s, %s\n", node->name, node->value);
+        }
         register_var(cg, node);
     }
     else if (strcmp(node->var_type, "i64") == 0) {
         cg->stack_offset = (cg->stack_offset + 7) & ~7;
         cg->stack_offset += 8;
         fprintf(cg->asm_file, "%%define %s [rbp - %d]\n", node->name, cg->stack_offset);
-        fprintf(cg->asm_file, "    mov qword %s, %s\n", node->name, node->value);
-
+        if (node->left->type == NODE_BINOP) {
+            codegen_expr(cg, node->left);
+            fprintf(cg->asm_file, "    mov qword %s, rax\n", node->name);
+        } else {
+            fprintf(cg->asm_file, "    mov qword %s, %s\n", node->name, node->value);
+        }
         register_var(cg, node);
     }
+
+    else if (strcmp(node->var_type, "u8") == 0) {
+        cg->stack_offset += 1;
+        fprintf(cg->asm_file, "%%define %s [rbp - %d]\n", node->name, cg->stack_offset);
+        if (node->left->type == NODE_BINOP) {
+            codegen_expr(cg, node->left);
+            fprintf(cg->asm_file, "    mov byte %s, al\n", node->name);
+        } else {
+            fprintf(cg->asm_file, "    mov byte %s, %s\n", node->name, node->value);
+        }
+        register_var(cg, node);
+    }
+    else if (strcmp(node->var_type, "u16") == 0) {
+        cg->stack_offset = (cg->stack_offset + 1) & ~1;
+        cg->stack_offset += 2;
+        fprintf(cg->asm_file, "%%define %s [rbp - %d]\n", node->name, cg->stack_offset);
+        if (node->left->type == NODE_BINOP) {
+            codegen_expr(cg, node->left);
+            fprintf(cg->asm_file, "    mov word %s, ax\n", node->name);
+        } else {
+            fprintf(cg->asm_file, "    mov word %s, %s\n", node->name, node->value);
+        }
+        register_var(cg, node);
+    }
+    else if (strcmp(node->var_type, "u32") == 0) {
+        cg->stack_offset = (cg->stack_offset + 3) & ~3;
+        cg->stack_offset += 4;
+        fprintf(cg->asm_file, "%%define %s [rbp - %d]\n", node->name, cg->stack_offset);
+        if (node->left->type == NODE_BINOP) {
+            codegen_expr(cg, node->left);
+            fprintf(cg->asm_file, "    mov dword %s, eax\n", node->name);
+        } else {
+            fprintf(cg->asm_file, "    mov dword %s, %s\n", node->name, node->value);
+        }
+        register_var(cg, node);
+    }
+    else if (strcmp(node->var_type, "u64") == 0) {
+        cg->stack_offset = (cg->stack_offset + 7) & ~7;
+        cg->stack_offset += 8;
+        fprintf(cg->asm_file, "%%define %s [rbp - %d]\n", node->name, cg->stack_offset);
+        if (node->left->type == NODE_BINOP) {
+            codegen_expr(cg, node->left);
+            fprintf(cg->asm_file, "    mov qword %s, rax\n", node->name);
+        } else {
+            fprintf(cg->asm_file, "    mov qword %s, %s\n", node->name, node->value);
+        }
+        register_var(cg, node);
+    }
+    
     else if (strcmp(node->var_type, "str") == 0) {
         codegen_collect_string(cg, node);
     }

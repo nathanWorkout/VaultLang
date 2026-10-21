@@ -18,7 +18,7 @@ int main() {
     p.lexer = l;
     p.current = next_token(&p.lexer);
 
-    Node nodes[256];
+    Node *nodes[256];
     int node_count = 0;
 
     while (p.current.type != TOKEN_EOF) {
@@ -30,10 +30,10 @@ int main() {
 
     // collecte
     for (int i = 0; i < node_count; i++) {
-        if (nodes[i].type == NODE_VAR_DECL && strcmp(nodes[i].var_type, "str") == 0) {
-            codegen_var_decl(&cg, &nodes[i]);
-        } else if (nodes[i].type == NODE_PRINT && nodes[i].value_type == TOKEN_STRING) {
-            codegen_collect_string(&cg, &nodes[i]);
+        if (nodes[i]->type == NODE_VAR_DECL && strcmp(nodes[i]->var_type, "str") == 0) {
+            codegen_var_decl(&cg, nodes[i]);
+        } else if (nodes[i]->type == NODE_PRINT && nodes[i]->value_type == TOKEN_STRING) {
+            codegen_collect_string(&cg, nodes[i]);
         }
     }
 
@@ -41,8 +41,8 @@ int main() {
 
     // generation
     for (int i = 0; i < node_count; i++) {
-        if (nodes[i].type == NODE_VAR_DECL && strcmp(nodes[i].var_type, "str") == 0) continue; // strings deja traiter lors de la collecte
-        codegen_node(&cg, &nodes[i]);
+        if (nodes[i]->type == NODE_VAR_DECL && strcmp(nodes[i]->var_type, "str") == 0) continue; // strings deja traiter lors de la collecte
+        codegen_node(&cg, nodes[i]);
     }
 
     codegen_epilogue(&cg);

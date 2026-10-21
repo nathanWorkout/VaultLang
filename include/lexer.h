@@ -13,6 +13,10 @@ typedef enum {
     TOKEN_CHAR,   // 'a'
     TOKEN_LPAREN,
     TOKEN_RPAREN,
+    TOKEN_PLUS,
+    TOKEN_MINUS,
+    TOKEN_STAR,
+    TOKEN_SLASH,
     TOKEN_EOF,
 } TokenType;
 

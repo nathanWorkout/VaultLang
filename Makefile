@@ -5,7 +5,8 @@ SRC = src/main.c src/lexer.c src/ast.c src/parser.c src/file.c \
       src/codegen/codegen.c \
       src/codegen/codegen_var.c \
       src/codegen/codegen_print.c \
-      src/codegen/codegen_prologue.c
+      src/codegen/codegen_prologue.c \
+      src/codegen/codegen_expr.c
 
 OBJ = $(patsubst src/%.c, build/%.o, $(SRC))
 BIN = build/vaultc
